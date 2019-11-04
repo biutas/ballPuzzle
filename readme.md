@@ -2,12 +2,12 @@
 
 Ball puzzle é um jogo casual, onde a bola deve ser colocada no buraco do tabuleiro, passando por uma série de obstaculos.
 Sobre os itens necessários no trabalho: 
-     Transformações: Serão realizadas na movimentação da bola (translação) e na inclinação da mesa (rotação);
-     Superfícies: Utilizadas na criação de obstáculos e na bola (superfície de revolução);
-     Iluminação: Luz ambiente;
-     Sombras: Serão geradas na movimentação da bola e nos obstáculos conforme a movimentação da mesa;
-     Texturas: Textura da bola, mesa, etc;
-     Partículas: Utilização de efeitos especiais quando a bola encontrar o buraco, nas colisões com as bordas e obstáculos e na velocidade da bola.
+     * Transformações: Serão realizadas na movimentação da bola (translação) e na inclinação da mesa (rotação);
+     * Superfícies: Utilizadas na criação de obstáculos e na bola (superfície de revolução);
+     * Iluminação: Luz ambiente;
+     * Sombras: Serão geradas na movimentação da bola e nos obstáculos conforme a movimentação da mesa;
+     * Texturas: Textura da bola, mesa, etc;
+     * Partículas: Utilização de efeitos especiais quando a bola encontrar o buraco, nas colisões com as bordas e obstáculos e na velocidade da bola.
 
 # Interação com o usuário
 
