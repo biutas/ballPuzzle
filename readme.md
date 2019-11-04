@@ -2,6 +2,10 @@
 
 Ball puzzle é um jogo casual, onde a bola deve ser colocada no buraco do tabuleiro, passando por uma série de obstaculos.
 
+# Interação
+
+O usuário irá mexer a mesa de forma que ele consiga colocar a bola dentro do buraco, enfrentando alguns obstáculos. Quanto menor o tempo maior será sua pontuação.
+
 ## Importante!
 #####  Sempre que estiver fazendo algum item da lista, atualize o *readme*!
 
@@ -28,4 +32,3 @@ Ball puzzle é um jogo casual, onde a bola deve ser colocada no buraco do tabule
 * [ ] Criar método para avaliar pontuação
 * [ ] Tempo levado para concluir fase
 * [ ] Criar melhores pontuações
-
