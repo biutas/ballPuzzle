@@ -1,5 +1,7 @@
 # Ball In a Maze Puzzle
 
+Grupo: Arthur de Bortoli, Douglas Vieira, Eduardo Cordeiro, Gabriel Lopes
+
 Ball puzzle é um jogo casual, onde a bola deve ser colocada no buraco do tabuleiro, passando por uma série de obstaculos.
 Sobre os itens necessários no trabalho: 
 
