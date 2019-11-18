@@ -25,11 +25,11 @@ O usuário irá mexer a mesa de forma que ele consiga colocar a bola dentro do b
 
  * [x] Criar arquivo readme.md (Github)
  * [ ] Criar estrutura do projeto
-    * [ ] Index.html
+    * [x] Index.html
     * [ ] css.css
-    * [ ] script.js
-* [ ] Criar tabuleiro
-* [ ] Fazer tabuleiro movimentar com setas 
+    * [x] script.js
+* [x] Criar tabuleiro
+* [x] Fazer tabuleiro movimentar com setas 
 * [ ] Adicionar gravidade e colisão
 * [ ] Criar sensor de quanto finalizar fase (quando Y da bola for menor que 0)
 * [ ] Criar obstáculos no tabuleiro
