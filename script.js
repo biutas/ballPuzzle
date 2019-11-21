@@ -1,7 +1,5 @@
 "use strict";
 
-var velocidade = 0.02, virarCamera = Math.PI*0.02;
-
 var cena = new THREE.Scene;
 
 var camera = new THREE.PerspectiveCamera(35, window.innerWidth/window.innerHeight, 0.1, 1000);
@@ -87,20 +85,20 @@ render.shadowMap.enabled = true;
 render.shadowMap.type = THREE.BasicShadowMap;
 
 var controles = new THREE.OrbitControls(camera, render.domElement);
-
 var angMax = Math.PI/15;
-
 camera.rotation.x = 0.75;
 camera.rotation.y = 0;
 
 function desenhar(){
+
 	processaTeclas();
 	requestAnimationFrame(desenhar);
 	esfera.rotation.x += 0.01;
 	esfera.rotation.y += -0.01;
 	esfera.rotation.z += 0.01;
 	render.render(cena, camera);
-	
+    // console.log(angX);
+    // console.log(angY)	
 }
 
 requestAnimationFrame(desenhar);
@@ -113,35 +111,42 @@ document.onkeyup = function (evt) {
     teclas[evt.keyCode] = false;
 }
 
+var angX = cena.rotation.x;
+var angY = cena.rotation.y;
+
+var velX = 0, velY = 0;
+
 function processaTeclas(){
-	//W
-    if(teclas[87]){
+	//Cima
+    if(teclas[38]){
 		cena.rotation.x -= Math.sin(Math.PI/90);    
 		if (cena.rotation.x <= -angMax) {
-			cena.rotation.x = -angMax;
+            cena.rotation.x = -angMax;
 		}
 	}
-
-	//S
-    if(teclas[83]){
+    
+	//Baixo
+    if(teclas[40]){
 		cena.rotation.x += Math.sin(Math.PI/90);
 		if (cena.rotation.x >= angMax) {
-			cena.rotation.x = angMax;
+            cena.rotation.x = angMax;
 		}
     }
+    angX = cena.rotation.x;
     
-	//A
-    if(teclas[65]){
+	//Esquerda
+    if(teclas[37]){
 		cena.rotation.y -= Math.sin(Math.PI/90);
 		if (cena.rotation.y <= -angMax) {
 			cena.rotation.y = -angMax;
 		}
     }
-    //Di
-    if(teclas[68]){
+    //Direita
+    if(teclas[39]){
 		cena.rotation.y += Math.sin(Math.PI/90); 
 		if (cena.rotation.y >= angMax) {
 			cena.rotation.y = angMax;
 		}
     }
+    angY = cena.rotation.y;
 }
