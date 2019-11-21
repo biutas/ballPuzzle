@@ -26,31 +26,69 @@ let canvas = render.domElement
 document.body.appendChild(canvas);
 
 // Desenha o chão com textura
-let geometriaSolo = new THREE.PlaneGeometry(1000, 1000, 100, 100);
-geometriaSolo.rotateX(270 * Math.PI / 180)
-let texture = new THREE.TextureLoader().load( './images/textures/moon.png' );
-let grassBump = new THREE.TextureLoader().load( './images/textures/moon.png' );
-texture.wrapS = THREE.RepeatWrapping;
-texture.wrapT = THREE.RepeatWrapping;
-// texture.repeat.set( 40, 40 );
-let material = new THREE.MeshStandardMaterial( {
-    map: texture, 
-    bumpMap: grassBump, 
-    bumScale: 30,
-    lightMap: grassBump, 
-    lightMapIntensity: 0.5, 
-    roughness: .7, 
-    metalness: 0, 
-    metalnessMap: grassBump
-} );
-let solo = new Physijs.PlaneMesh(geometriaSolo, material);
-solo.castShadow = true;
-solo.receiveShadow = true;
-solo.setLinearFactor(new THREE.Vector3(0, 0, 0));
-solo.setAngularFactor(new THREE.Vector3(0, 0, 0));
-solo.setAngularVelocity
-solo.setLinearVelocity
-cena.add(solo); 
+// let geometriaSolo = new THREE.PlaneGeometry(1000, 1000, 100, 100);
+// geometriaSolo.rotateX(270 * Math.PI / 180)
+// let texture = new THREE.TextureLoader().load( './images/textures/moon.png' );
+// let grassBump = new THREE.TextureLoader().load( './images/textures/moon.png' );
+// texture.wrapS = THREE.RepeatWrapping;
+// texture.wrapT = THREE.RepeatWrapping;
+// // texture.repeat.set( 40, 40 );
+// let material = new THREE.MeshStandardMaterial( {
+//     map: texture, 
+//     bumpMap: grassBump, 
+//     bumScale: 30,
+//     lightMap: grassBump, 
+//     lightMapIntensity: 0.5, 
+//     roughness: .7, 
+//     metalness: 0, 
+//     metalnessMap: grassBump
+// } );
+// let solo = new Physijs.PlaneMesh(geometriaSolo, material);
+// solo.castShadow = true;
+// solo.receiveShadow = true;
+// solo.setLinearFactor(new THREE.Vector3(0, 0, 0));
+// solo.setAngularFactor(new THREE.Vector3(0, 0, 0));
+// solo.setAngularVelocity
+// solo.setLinearVelocity
+// cena.add(solo);
+
+
+//Plano
+var planoGeometry = new THREE.PlaneGeometry(7, 5, 100, 100);
+var planoMaterial = new THREE.MeshPhongMaterial({color:0x4F6156});
+var plano = new THREE.Mesh(planoGeometry, planoMaterial);
+plano.receiveShadow = true;
+cena.add(plano);
+
+//Parede Cima
+var paredeCimaGeometry = new THREE.BoxGeometry(7, 0.1, 0.3);
+var paredeCimaMaterial = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
+var paredeCima = new THREE.Mesh( paredeCimaGeometry, paredeCimaMaterial );
+paredeCima.position.set(0, 2.5, 0.15)
+cena.add(paredeCima);
+
+// //Parede Baixo
+var paredeBaixoGeometry = new THREE.BoxGeometry(7, 0.1, 0.3);
+var paredeBaixoMaterial = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
+var paredeBaixo = new THREE.Mesh( paredeBaixoGeometry, paredeBaixoMaterial );
+paredeBaixo.position.set(0, -2.5, 0.15)
+cena.add(paredeBaixo);
+
+//Parede Direita
+var paredeDireitaGeometry = new THREE.BoxGeometry(5.1, 0.1, 0.3);
+var paredeDireitaMaterial = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
+var paredeDireita = new THREE.Mesh( paredeDireitaGeometry, paredeDireitaMaterial );
+paredeDireita.position.set(3.5, 0, 0.15)
+paredeDireita.rotation.z=Math.PI/2;
+cena.add(paredeDireita);
+
+//Parede Esquerda
+var paredeEsquerdaGeometry = new THREE.BoxGeometry(5.1, 0.1, 0.3);
+var paredeEsquerdaMaterial = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
+var paredeEsquerda = new THREE.Mesh( paredeEsquerdaGeometry, paredeEsquerdaMaterial );
+paredeEsquerda.position.set(-3.5, 0, 0.15);
+paredeEsquerda.rotation.z=Math.PI/2;
+cena.add(paredeEsquerda);
 
 
 // Desenha a esfera central
@@ -111,38 +149,45 @@ for (let i = 0; i < 256; i++) {
     teclas[i] = false
 }
 
-document.onkeydown = function (evt){
-    teclas[evt.keyCode] = true
-}
-document.onkeyup = function (evt){
-    teclas[evt.keyCode] = false
-}
-var velocity = new THREE.Vector3();
-var prevTime = performance.now();
+var angMax = Math.PI/15;
 
-let processaTeclas = () =>{
-    // Frente (W)
+document.onkeydown = function (evt) {
+    teclas[evt.keyCode] = true;
+}
+
+document.onkeyup = function (evt) {
+    teclas[evt.keyCode] = false;
+}
+
+function processaTeclas(){
+	//W
     if(teclas[87]){
-        // controls.moveForward(10)
-    }
-    // Trás (S)
-    if(teclas[83]){
-        // controls.moveForward(-10)
-    }
-    // Esquerda (A)
-    if(teclas[65]){
-        // controls.moveRight(-10)
-    }
-    // Direita (D)
-    if(teclas[68]){
-        // controls.moveRight(10)
-    }
-    // Pulo (D)
-    if(teclas[32]){
-        if(podePular){
-            velocity.y += 300;
-            podePular = false
-        }
-    }
+		cena.rotation.x -= Math.sin(Math.PI/90);    
+		if (cena.rotation.x <= -angMax) {
+			cena.rotation.x = -angMax;
+		}
+	}
 
+	//S
+    if(teclas[83]){
+		cena.rotation.x += Math.sin(Math.PI/90);
+		if (cena.rotation.x >= angMax) {
+			cena.rotation.x = angMax;
+		}
+    }
+    
+	//A
+    if(teclas[65]){
+		cena.rotation.y -= Math.sin(Math.PI/90);
+		if (cena.rotation.y <= -angMax) {
+			cena.rotation.y = -angMax;
+		}
+    }
+    //Di
+    if(teclas[68]){
+		cena.rotation.y += Math.sin(Math.PI/90); 
+		if (cena.rotation.y >= angMax) {
+			cena.rotation.y = angMax;
+		}
+    }
 }
