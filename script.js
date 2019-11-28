@@ -51,6 +51,47 @@ paredeEsquerda.position.set(-3.5, 0, 0.15);
 paredeEsquerda.rotation.z=Math.PI/2;
 cena.add(paredeEsquerda);
 
+//Obstáculos
+var cilindroEsqObstaculo = new THREE.CylinderGeometry( 0.3, 0.3, 0.3, 32 );
+var cilindroMaterial = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+var cilindroEsq = new THREE.Mesh( cilindroEsqObstaculo, cilindroMaterial );
+cena.add( cilindroEsq );
+cilindroEsq.rotation.x = Math.PI/2;
+cilindroEsq.position.set(-1.5, 0, 0.2);
+
+var cilindroDirObstaculo = new THREE.CylinderGeometry( 0.3, 0.3, 0.3, 32 );
+var cilindroDir = new THREE.Mesh(cilindroDirObstaculo, cilindroMaterial);
+cena.add(cilindroDir);
+cilindroDir.rotation.x = Math.PI/2;
+cilindroDir.position.set(1.5, 0, 0.2);
+
+var paredeEsquerdaObstaculo = new THREE.BoxGeometry(1, 0.1, 0.3);
+var paredeEsquerdaObst = new THREE.Mesh( paredeEsquerdaObstaculo, paredeEsquerdaMaterial );
+paredeEsquerdaObst.position.set(-0.5, 0, 0.15);
+paredeEsquerdaObst.rotation.z=Math.PI/2;
+cena.add(paredeEsquerdaObst);
+
+var paredeDireitaObstaculo = new THREE.BoxGeometry(1, 0.1, 0.3);
+var paredeDireitaObst = new THREE.Mesh( paredeDireitaObstaculo, paredeEsquerdaMaterial );
+paredeDireitaObst.position.set(0.5, 0, 0.15);
+paredeDireitaObst.rotation.z=Math.PI/2;
+cena.add(paredeDireitaObst);
+
+var paredeCimaObstaculo = new THREE.BoxGeometry(1.1, 0.1, 0.3);
+var paredeCimaObs = new THREE.Mesh(paredeCimaObstaculo, paredeBaixoMaterial);
+paredeCimaObs.position.set(0, 0.5, 0.15)
+cena.add(paredeCimaObs);
+
+var paredeBaixoEsqObstaculo = new THREE.BoxGeometry(1.1/4, 0.1, 0.3);
+var paredeBaixoEsqObs = new THREE.Mesh(paredeBaixoEsqObstaculo, paredeBaixoMaterial);
+paredeBaixoEsqObs.position.set(-0.37, -0.45, 0.15)
+cena.add(paredeBaixoEsqObs);
+
+var paredeBaixoDirObstaculo = new THREE.BoxGeometry(1.1/4, 0.1, 0.3);
+var paredeBaixoDirObs = new THREE.Mesh(paredeBaixoEsqObstaculo, paredeBaixoMaterial);
+paredeBaixoDirObs.position.set(0.37, -0.45, 0.15)
+cena.add(paredeBaixoDirObs);
+
 //Bola
 var esferaGeometry = new THREE.SphereGeometry(0.1, 50, 50);
 var esferaMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
