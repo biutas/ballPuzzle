@@ -26,6 +26,8 @@ var paredeCimaGeometry = new THREE.BoxGeometry(7, 0.1, 0.3);
 var paredeCimaMaterial = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
 var paredeCima = new THREE.Mesh( paredeCimaGeometry, paredeCimaMaterial );
 paredeCima.position.set(0, 2.5, 0.15)
+paredeCima.receiveShadow = true;
+paredeCima.castShadow = true;
 cena.add(paredeCima);
 
 // //Parede Baixo
@@ -33,6 +35,8 @@ var paredeBaixoGeometry = new THREE.BoxGeometry(7, 0.1, 0.3);
 var paredeBaixoMaterial = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
 var paredeBaixo = new THREE.Mesh( paredeBaixoGeometry, paredeBaixoMaterial );
 paredeBaixo.position.set(0, -2.5, 0.15)
+paredeBaixo.receiveShadow = true;
+paredeBaixo.castShadow = true;
 cena.add(paredeBaixo);
 
 //Parede Direita
@@ -41,6 +45,8 @@ var paredeDireitaMaterial = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
 var paredeDireita = new THREE.Mesh( paredeDireitaGeometry, paredeDireitaMaterial );
 paredeDireita.position.set(3.5, 0, 0.15)
 paredeDireita.rotation.z=Math.PI/2;
+paredeDireita.receiveShadow = true;
+paredeDireita.castShadow = true;
 cena.add(paredeDireita);
 
 //Parede Esquerda
@@ -49,6 +55,8 @@ var paredeEsquerdaMaterial = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
 var paredeEsquerda = new THREE.Mesh( paredeEsquerdaGeometry, paredeEsquerdaMaterial );
 paredeEsquerda.position.set(-3.5, 0, 0.15);
 paredeEsquerda.rotation.z=Math.PI/2;
+paredeEsquerda.receiveShadow = true;
+paredeEsquerda.castShadow = true;
 cena.add(paredeEsquerda);
 
 //Obstáculos
@@ -57,39 +65,53 @@ var cilindroMaterial = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
 var cilindroEsq = new THREE.Mesh( cilindroEsqObstaculo, cilindroMaterial );
 cena.add( cilindroEsq );
 cilindroEsq.rotation.x = Math.PI/2;
+cilindroEsq.receiveShadow = true;
+cilindroEsq.castShadow = true;
 cilindroEsq.position.set(-1.5, 0, 0.2);
 
 var cilindroDirObstaculo = new THREE.CylinderGeometry( 0.3, 0.3, 0.3, 32 );
 var cilindroDir = new THREE.Mesh(cilindroDirObstaculo, cilindroMaterial);
 cena.add(cilindroDir);
 cilindroDir.rotation.x = Math.PI/2;
+cilindroDir.receiveShadow = true;
+cilindroDir.castShadow = true;
 cilindroDir.position.set(1.5, 0, 0.2);
 
 var paredeEsquerdaObstaculo = new THREE.BoxGeometry(1, 0.1, 0.3);
 var paredeEsquerdaObst = new THREE.Mesh( paredeEsquerdaObstaculo, paredeEsquerdaMaterial );
 paredeEsquerdaObst.position.set(-0.5, 0, 0.15);
 paredeEsquerdaObst.rotation.z=Math.PI/2;
+paredeEsquerdaObst.receiveShadow = true;
+paredeEsquerdaObst.castShadow = true;
 cena.add(paredeEsquerdaObst);
 
 var paredeDireitaObstaculo = new THREE.BoxGeometry(1, 0.1, 0.3);
 var paredeDireitaObst = new THREE.Mesh( paredeDireitaObstaculo, paredeEsquerdaMaterial );
 paredeDireitaObst.position.set(0.5, 0, 0.15);
 paredeDireitaObst.rotation.z=Math.PI/2;
+paredeDireitaObst.receiveShadow = true;
+paredeDireitaObst.castShadow = true;
 cena.add(paredeDireitaObst);
 
 var paredeCimaObstaculo = new THREE.BoxGeometry(1.1, 0.1, 0.3);
 var paredeCimaObs = new THREE.Mesh(paredeCimaObstaculo, paredeBaixoMaterial);
 paredeCimaObs.position.set(0, 0.5, 0.15)
+paredeCimaObs.receiveShadow = true;
+paredeCimaObs.castShadow = true;
 cena.add(paredeCimaObs);
 
 var paredeBaixoEsqObstaculo = new THREE.BoxGeometry(1.1/4, 0.1, 0.3);
 var paredeBaixoEsqObs = new THREE.Mesh(paredeBaixoEsqObstaculo, paredeBaixoMaterial);
 paredeBaixoEsqObs.position.set(-0.37, -0.45, 0.15)
+paredeBaixoEsqObs.receiveShadow = true;
+paredeBaixoEsqObs.castShadow = true;
 cena.add(paredeBaixoEsqObs);
 
 var paredeBaixoDirObstaculo = new THREE.BoxGeometry(1.1/4, 0.1, 0.3);
 var paredeBaixoDirObs = new THREE.Mesh(paredeBaixoEsqObstaculo, paredeBaixoMaterial);
 paredeBaixoDirObs.position.set(0.37, -0.45, 0.15)
+paredeBaixoDirObs.receiveShadow = true;
+paredeBaixoDirObs.castShadow = true;
 cena.add(paredeBaixoDirObs);
 
 //Bola
@@ -106,7 +128,7 @@ var luzAmbiente = new THREE.AmbientLight(0xffffff, 0.4);
 cena.add(luzAmbiente);
 
 var luzPonto = new THREE.PointLight(0xffffff, 1, 1000);
-luzPonto.position.set(1,-1,1);
+luzPonto.position.set(1.5,-1,1);
 luzPonto.castShadow = true;
 luzPonto.shadow.camera.near = 0.1;
 luzPonto.shadow.camera.far = 25;
@@ -127,17 +149,29 @@ render.shadowMap.type = THREE.BasicShadowMap;
 
 var controles = new THREE.OrbitControls(camera, render.domElement);
 var angMax = Math.PI/15;
+var vel = 0.5;
+var mod = 0;
+var x, y;
 camera.rotation.x = 0.75;
 camera.rotation.y = 0;
 
 function desenhar(){
 
 	processaTeclas();
+	x += (vel*mod)*Math.cos(Math.PI/180 * angX)
+	y += (vel*mod)*Math.sin(Math.PI/180 * angY)
+	
 	requestAnimationFrame(desenhar);
-	esfera.rotation.x += 0.01;
-	esfera.rotation.y += -0.01;
-	esfera.rotation.z += 0.01;
 	render.render(cena, camera);
+	
+	//esfera.translateX(x)
+	//esfera.translateY(y)
+	
+	
+	console.log(esfera.x);
+	
+	
+
     // console.log(angX);
     // console.log(angY)	
 }
@@ -162,7 +196,8 @@ function processaTeclas(){
     if(teclas[38]){
 		cena.rotation.x -= Math.sin(Math.PI/90);    
 		if (cena.rotation.x <= -angMax) {
-            cena.rotation.x = -angMax;
+			cena.rotation.x = -angMax;
+			mod += -angX;
 		}
 	}
     
@@ -171,6 +206,7 @@ function processaTeclas(){
 		cena.rotation.x += Math.sin(Math.PI/90);
 		if (cena.rotation.x >= angMax) {
             cena.rotation.x = angMax;
+			mod += angX;
 		}
     }
     angX = cena.rotation.x;
@@ -180,6 +216,7 @@ function processaTeclas(){
 		cena.rotation.y -= Math.sin(Math.PI/90);
 		if (cena.rotation.y <= -angMax) {
 			cena.rotation.y = -angMax;
+			mod += -angY;
 		}
     }
     //Direita
@@ -187,6 +224,7 @@ function processaTeclas(){
 		cena.rotation.y += Math.sin(Math.PI/90); 
 		if (cena.rotation.y >= angMax) {
 			cena.rotation.y = angMax;
+			mod += angY;
 		}
     }
     angY = cena.rotation.y;
