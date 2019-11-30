@@ -1,148 +1,253 @@
-Physijs.scripts.worker = './libraries/physi_worker.js';
-// Physijs.scripts.ammo = './libraries/ammo.js';
+/*
+Colocar mais informações sobre o projeto aqui depois 
+*/
 
-let cena = new Physijs.Scene();
-cena.setGravity(new THREE.Vector3(0,-50,0))
-let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.x = 700
-camera.position.y = 400
-camera.lookAt(0,0,0)
+Ammo().then((Ammo)=>{
 
-let render = new THREE.WebGLRenderer({antialias: true});
-render.setSize(window.innerWidth, window.innerHeight);
-// Configurações de sobra
-render.shadowMap.enabled = true;
-render.shadowMapSoft = true;
-render.shadowMap.type = THREE.PCFSoftShadowMap;
-render.shadowCameraNear = 0.5;
-render.shadowCameraFar = camera.far;
-render.shadowCameraFov = 500;
-render.shadowMapBias = 0.0039;
-render.shadowMapDarkness = 0.25;
-render.shadowMapWidth = 4096;
-render.shadowMapHeight = 4096;
+// Inicializando variaveis
+var camera, scene, renderer;
+var clock = new THREE.Clock()
+var time
+ // Physics variables
+ var gravityConstant = -200;
+ var collisionConfiguration;
+ var dispatcher;
+ var broadphase;
+ var solver;
+ var physicsWorld;
+ var rigidBodies = [];
+ var margin = 0.05;
+ var transformAux1 = new Ammo.btTransform();
+ var floorRotateX = 0
+ var floorRotateY = 0
+var floor
+ // controls WASD
+var teclas = []
+for (var i = 0; i < 256; i++) {
+	teclas[i] = false
+}
+document.onkeydown = function (evt) {
+    teclas[evt.keyCode] = true;
+}
 
-let canvas = render.domElement
-document.body.appendChild(canvas);
+document.onkeyup = function (evt) {
+    teclas[evt.keyCode] = false;
+}
 
-// Desenha o chão com textura
-let geometriaSolo = new THREE.PlaneGeometry(1000, 1000, 100, 100);
-geometriaSolo.rotateX(270 * Math.PI / 180)
-let texture = new THREE.TextureLoader().load( './images/textures/moon.png' );
-let grassBump = new THREE.TextureLoader().load( './images/textures/moon.png' );
-texture.wrapS = THREE.RepeatWrapping;
-texture.wrapT = THREE.RepeatWrapping;
-// texture.repeat.set( 40, 40 );
-let material = new THREE.MeshStandardMaterial( {
-    map: texture, 
-    bumpMap: grassBump, 
-    bumScale: 30,
-    lightMap: grassBump, 
-    lightMapIntensity: 0.5, 
-    roughness: .7, 
-    metalness: 0, 
-    metalnessMap: grassBump
-} );
-let solo = new Physijs.PlaneMesh(geometriaSolo, material);
-solo.castShadow = true;
-solo.receiveShadow = true;
-solo.setLinearFactor(new THREE.Vector3(0, 0, 0));
-solo.setAngularFactor(new THREE.Vector3(0, 0, 0));
-solo.setAngularVelocity
-solo.setLinearVelocity
-cena.add(solo); 
+// Função que chama os metodos para iniciar
+init()
+animate()
 
-
-// Desenha a esfera central
-let geometriaEsfera = new THREE.SphereGeometry(10,20,20)
-geometriaEsfera.translate(0,20,0)
-let materialEsfera = new THREE.MeshStandardMaterial({
-    color: 0x1467ff,
-    metalness: 0,
-    roughness: 0.3
-})
-let esfera = new Physijs.SphereMesh(geometriaEsfera,materialEsfera)
-esfera.castShadow = true;
-esfera.receiveShadow = true;
-esfera.addEventListener( 'collision', function( other_object, relative_velocity, relative_rotation, contact_normal ) {
-    // `this` has collided with `other_object` with an impact speed of `relative_velocity` and a rotational force of `relative_rotation` and at normal `contact_normal`
-    console.log(this)
-    this.up = new THREE.Vector3(0,0,0)
-    this.setlinearVelocity = new THREE.Vector3(0,0,0)
-    this.setAngularVelocity = new THREE.Vector3(0,0,0)
-    console.log(this._physijs)
-    console.log(other_object)
-
-    esfera.__dirtyPosition = true
-});
-
-cena.add(esfera)
-
-// Luz ponto
-// Habilitando sombra
-// Tamanho da sombra
-// Posição da luz
-let luzPonto = new THREE.SpotLight(0xffffff0, 1, 0, 2)
-luzPonto.castShadow = true;
-luzPonto.shadowDarkness = 0.3
-luzPonto.shadow.mapSize.width = 4096;
-luzPonto.shadow.mapSize.height = 4096;
-luzPonto.position.set(0,100,100)
-cena.add(luzPonto)  
-
-// Luz ambiente
-let ambientLight = new THREE.AmbientLight(0x404040);
-cena.add(ambientLight)
-
-// controls.getObject().position.y = 100
 function init() {
-    processaTeclas();
-    render.render(cena, camera);
-    cena.simulate()
-    requestAnimationFrame(init);
-}
-requestAnimationFrame(init);
-
-
-// controls WASD
-let teclas = []
-let podePular = true, pulando = false, altura = 0
-for (let i = 0; i < 256; i++) {
-    teclas[i] = false
+	initGraphics()
+	initPhysics()
+	createObjects()
+	initInput()
 }
 
-document.onkeydown = function (evt){
-    teclas[evt.keyCode] = true
-}
-document.onkeyup = function (evt){
-    teclas[evt.keyCode] = false
-}
-var velocity = new THREE.Vector3();
-var prevTime = performance.now();
+// Função para iniciar o Three.js
+function initGraphics() {
+	/*
+		Inicia a cena, renderer, camera e luzes
+	*/
+	// Inicia a cena 
+	scene = new THREE.Scene()
+	
+	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000)
+	camera.position.x = 700
+	camera.position.y = 400
+	camera.lookAt(0,0,0)
 
-let processaTeclas = () =>{
-    // Frente (W)
-    if(teclas[87]){
-        // controls.moveForward(10)
-    }
-    // Trás (S)
-    if(teclas[83]){
-        // controls.moveForward(-10)
-    }
-    // Esquerda (A)
-    if(teclas[65]){
-        // controls.moveRight(-10)
-    }
-    // Direita (D)
-    if(teclas[68]){
-        // controls.moveRight(10)
-    }
-    // Pulo (D)
-    if(teclas[32]){
-        if(podePular){
-            velocity.y += 300;
-            podePular = false
-        }
-    }
+	// Define o tipo de render e adiciona o antialias
+	renderer = new THREE.WebGLRenderer({antialias: true})
+		// Tamanho do 114 é igual à largura e altura da tela
+		renderer.setSize(window.innerWidth, window.innerHeight)
+		// Configurações de sobra
+		renderer.shadowMap.enabled = true
+		renderer.shadowMapSoft = true
+		renderer.shadowMap.type = THREE.PCFSoftShadowMap
+		renderer.shadowCameraNear = 0.5
+		renderer.shadowCameraFar = camera.far
+		renderer.shadowCameraFov = 500
+		renderer.shadowMapBias = 0.0039
+		renderer.shadowMapDarkness = 0.25
+		renderer.shadowMapWidth = 4096
+		renderer.shadowMapHeight = 4096
+	
+		// Coloca o render no elemento HTML canvas
+	var canvas = renderer.domElement
+	document.body.appendChild(canvas)
+	
+	// Define perspectiva e posição da camera
+
+	// Luz ponto
+	var luzPonto = new THREE.SpotLight(0xffffff0, 1, 0, 2)
+		// Habilitando sombra
+		luzPonto.castShadow = true
+		luzPonto.shadowDarkness = 0.8
+		// Tamanho da sombra
+		luzPonto.shadow.mapSize.width = 4096
+		luzPonto.shadow.mapSize.height = 4096
+		luzPonto.shadow.camera.near = .5 
+		luzPonto.shadow.camera.far = camera.far 
+		// Posição da luz
+		luzPonto.position.set(0,100,0)
+		scene.add(luzPonto)  
+
+	// Luz ambiente
+	var ambientLight = new THREE.AmbientLight(0x404040)
+	scene.add(ambientLight)
+
+	// Quando a janela redimensionar, altera o tamanho do viewport
+	window.addEventListener( 'resize', onWindowResize, false );	
+}
+
+// Configurações de fisica do Ammo.js
+function initPhysics()  {
+	collisionConfiguration = new Ammo.btSoftBodyRigidBodyCollisionConfiguration();
+	dispatcher = new Ammo.btCollisionDispatcher( collisionConfiguration );
+	broadphase = new Ammo.btDbvtBroadphase();
+	solver = new Ammo.btSequentialImpulseConstraintSolver();
+	softBodySolver = new Ammo.btDefaultSoftBodySolver();
+	physicsWorld = new Ammo.btSoftRigidDynamicsWorld( dispatcher, broadphase, solver, collisionConfiguration, softBodySolver);
+	physicsWorld.setGravity( new Ammo.btVector3( 0, gravityConstant, 0 ) );
+	physicsWorld.getWorldInfo().set_m_gravity( new Ammo.btVector3( 0, gravityConstant, 0 ) );
+}
+
+// Atualiza a posição dos objetos conforme parametros de fisica
+function updatePhysics( deltaTime ) {
+	
+	
+	// Step world
+	physicsWorld.stepSimulation( deltaTime, 10 );
+
+	// Update rigid bodies
+	for ( var i = 0, il = rigidBodies.length; i < il; i++ ) {
+		var objThree = rigidBodies[ i ];
+		var objPhys = objThree.userData.physicsBody;
+		var ms = objPhys.getMotionState();
+		if ( ms ) {
+
+			ms.getWorldTransform( transformAux1 );
+			var p = transformAux1.getOrigin();
+			var q = transformAux1.getRotation();
+			objThree.position.set( p.x(), p.y(), p.z() );
+			objThree.quaternion.set( q.x(), q.y(), q.z(), q.w() );
+
+		  }
+	}
 
 }
+
+// Cria o plano, paredes e obstáculos
+function createObjects()  {
+	var pos = new THREE.Vector3();
+	var quat = new THREE.Quaternion();
+
+	// Piso
+	pos.set( 0, 0, 0 );
+	// Rotação da mesa ( XYZW )
+	quat.set( floorRotateX * (Math.PI / 180), floorRotateY * (Math.PI / 180), 0, 1 );
+	var ground = createParalellepiped( 1000, 1, 1000, 0, pos, quat, new THREE.MeshPhongMaterial( { color: 0xFFFFFF } ) );
+	ground.castShadow = true;
+	ground.receiveShadow = true;
+
+	
+	var pos = new THREE.Vector3();
+	var quat = new THREE.Quaternion();
+
+	var ballMass = 2;
+	var ballRadius = 50;
+	var ball = new THREE.Mesh( new THREE.SphereGeometry( ballRadius, 20, 20 ), new THREE.MeshPhongMaterial( { color: 0x1467ff } ) );
+	ball.castShadow = true;
+	ball.receiveShadow = true;
+	var ballShape = new Ammo.btSphereShape( ballRadius );
+	ballShape.setMargin( margin );
+	pos.set( 0, 100, 0 );
+	quat.set( 0, 0, 0, 1 );
+	createRigidBody( ball, ballShape, ballMass, pos, quat );
+	ball.userData.physicsBody.setFriction( 0 );
+
+
+}
+
+// Viewport redimenciona junto com a janela
+function onWindowResize()  {
+
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+
+	renderer.setSize( window.innerWidth, window.innerHeight );
+
+}
+
+// Loop
+function animate()  {
+	/*
+		Chama a função para atualizar a fisica, processamento de teclas e orbit. 
+	*/
+	var deltaTime = clock.getDelta()
+	updatePhysics(deltaTime)
+	// updateControls() | Orbit controls
+	// createObjects()
+	initInput()
+	renderer.render(scene, camera)
+	time += deltaTime
+	requestAnimationFrame(animate)	
+}
+
+// Função que recebe informações sobre o objeto e transforma num objeto Ammo
+function createParalellepiped( sx, sy, sz, mass, pos, quat, material ) {
+
+	var threeObject = new THREE.Mesh( new THREE.BoxGeometry( sx, sy, sz, 1, 1, 1 ), material );
+	var shape = new Ammo.btBoxShape( new Ammo.btVector3( sx * 0.5, sy * 0.5, sz * 0.5 ) );
+	shape.setMargin( margin );
+
+	createRigidBody( threeObject, shape, mass, pos, quat );
+
+	return threeObject;
+
+}
+
+// Transforma o objeto Ammo em Three
+function createRigidBody( threeObject, physicsShape, mass, pos, quat ) {
+
+	threeObject.position.copy( pos );
+	threeObject.quaternion.copy( quat );
+
+	var transform = new Ammo.btTransform();
+	transform.setIdentity();
+	transform.setOrigin( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
+	transform.setRotation( new Ammo.btQuaternion( quat.x, quat.y, quat.z, quat.w ) );
+	var motionState = new Ammo.btDefaultMotionState( transform );
+
+	var localInertia = new Ammo.btVector3( 0, 0, 0 );
+	physicsShape.calculateLocalInertia( mass, localInertia );
+
+	var rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, physicsShape, localInertia );
+	var body = new Ammo.btRigidBody( rbInfo );
+
+	threeObject.userData.physicsBody = body;
+
+	scene.add( threeObject );
+
+	if ( mass > 0 ) {
+		rigidBodies.push( threeObject );
+
+		// Disable deactivation
+		body.setActivationState( 4 );
+	}
+
+	physicsWorld.addRigidBody( body );
+
+}
+
+// Controla as ações do usuário
+function initInput() {
+	if(teclas[38]){
+		console.log('pressed')
+		floorRotateY += 10
+	}
+}
+
+})
