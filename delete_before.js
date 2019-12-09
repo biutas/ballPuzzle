@@ -258,6 +258,7 @@ Ammo().then(function(Ammo) {
         var base = createParalellepiped( 1, 0.2, 1, 0, pos, quat, baseMaterial );
         base.castShadow = true;
         base.receiveShadow = true;
+        
         pos.set( ropePos.x, 0.5 * pylonHeight, ropePos.z - armLength );
         var pylon = createParalellepiped( 0.4, pylonHeight, 0.4, 0, pos, quat, baseMaterial );
         pylon.castShadow = true;
@@ -267,10 +268,10 @@ Ammo().then(function(Ammo) {
         arm.castShadow = true;
         arm.receiveShadow = true;
 
-        // Glue the rope extremes to the ball and the arm
-        var influence = 1;
-        ropeSoftBody.appendAnchor( 0, ball.userData.physicsBody, true, influence );
-        ropeSoftBody.appendAnchor( ropeNumSegments, arm.userData.physicsBody, true, influence );
+        // // Glue the rope extremes to the ball and the arm
+        // var influence = 1;
+        // ropeSoftBody.appendAnchor( 0, ball.userData.physicsBody, true, influence );
+        // ropeSoftBody.appendAnchor( ropeNumSegments, arm.userData.physicsBody, true, influence );
 
         // Hinge constraint to move the arm
         var pivotA = new Ammo.btVector3( 0, pylonHeight * 0.5, 0 );

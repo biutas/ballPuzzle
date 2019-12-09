@@ -138,32 +138,40 @@ function updatePhysics( deltaTime ) {
 	}
 
 }
-
+var ground
+var ball
 // Cria o plano, paredes e obstáculos
 function createObjects()  {
+	
 	var pos = new THREE.Vector3();
 	var quat = new THREE.Quaternion();
 
 	// Piso
 	pos.set( 0, 0, 0 );
 	// Rotação da mesa ( XYZW )
-	quat.set( floorRotateX * (Math.PI / 180), floorRotateY * (Math.PI / 180), 0, 1 );
-	var ground = createParalellepiped( 1000, 1, 1000, 0, pos, quat, new THREE.MeshPhongMaterial( { color: 0xFFFFFF } ) );
+	quat.set( 0 * Math.PI / 180, floorRotateY * (Math.PI / 180), 0, 1 );
+	ground = createParalellepiped( 1000, 1, 1000, 0, pos, quat, new THREE.MeshPhongMaterial( { color: 0xFFFFFF } ) );
 	ground.castShadow = true;
-	ground.receiveShadow = true;
+	ground.receiveShadow = true;tui	
 
+	// var pivotA = new Ammo.btVector3( 0, 0.5, 0 );
+	// var pivotB = new Ammo.btVector3( 0, -0.2, 0.5 );
+	// var axis = new Ammo.btVector3( 0, 1, 0 );
+	// hinge = new Ammo.btHingeConstraint( ground.userData.physicsBody, arm.userData.physicsBody, pivotA, pivotB, axis, axis, true );
+	// physicsWorld.addConstraint( hinge, true );
 	
+	// Bola
 	var pos = new THREE.Vector3();
 	var quat = new THREE.Quaternion();
 
 	var ballMass = 2;
 	var ballRadius = 50;
-	var ball = new THREE.Mesh( new THREE.SphereGeometry( ballRadius, 20, 20 ), new THREE.MeshPhongMaterial( { color: 0x1467ff } ) );
+	ball = new THREE.Mesh( new THREE.SphereGeometry( ballRadius, 20, 20 ), new THREE.MeshPhongMaterial( { color: 0x1467ff } ) );
 	ball.castShadow = true;
 	ball.receiveShadow = true;
 	var ballShape = new Ammo.btSphereShape( ballRadius );
 	ballShape.setMargin( margin );
-	pos.set( 0, 100, 0 );
+	pos.set( 100, 300, 0 );
 	quat.set( 0, 0, 0, 1 );
 	createRigidBody( ball, ballShape, ballMass, pos, quat );
 	ball.userData.physicsBody.setFriction( 0 );
@@ -245,8 +253,9 @@ function createRigidBody( threeObject, physicsShape, mass, pos, quat ) {
 // Controla as ações do usuário
 function initInput() {
 	if(teclas[38]){
-		console.log('pressed')
-		floorRotateY += 10
+		// console.log(ground.quaternion)
+		// console.log(ball.)
+		ball.translateX(100)
 	}
 }
 
