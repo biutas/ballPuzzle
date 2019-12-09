@@ -152,7 +152,7 @@ function createObjects()  {
 	quat.set( 0 * Math.PI / 180, floorRotateY * (Math.PI / 180), 0, 1 );
 	ground = createParalellepiped( 1000, 1, 1000, 0, pos, quat, new THREE.MeshPhongMaterial( { color: 0xFFFFFF } ) );
 	ground.castShadow = true;
-	ground.receiveShadow = true;tui	
+	ground.receiveShadow = true;
 
 	// var pivotA = new Ammo.btVector3( 0, 0.5, 0 );
 	// var pivotB = new Ammo.btVector3( 0, -0.2, 0.5 );
