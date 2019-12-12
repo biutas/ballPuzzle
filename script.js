@@ -11,19 +11,21 @@ for(var i = 0; i<256; i++){
     teclas[i] = false;
 }
 
-// var textureLoader = new THREE.TextureLoader();
-// var texturaPlano = new textureLoader.load("textura/floor_laminate_dirty_pine.png");
+var textureLoader = new THREE.TextureLoader();
+var texturaPlano = new textureLoader.load("textura/Mesa2Redimencionado.png");
+var texturaParede = new textureLoader.load("textura/paredes.jpg")
+var texturaObstaculos = new textureLoader.load("textura/tapeteVermelho.png")
 
 //Plano
 var planoGeometry = new THREE.PlaneGeometry(7, 5, 100, 100);
-var planoMaterial = new THREE.MeshPhongMaterial({color:0x4F6156});
+var planoMaterial = new THREE.MeshPhongMaterial({color:0xffffff, map: texturaPlano});
 var plano = new THREE.Mesh(planoGeometry, planoMaterial);
 plano.receiveShadow = true;
 cena.add(plano);
 
 //Parede Cima
 var paredeCimaGeometry = new THREE.BoxGeometry(7, 0.1, 0.3);
-var paredeCimaMaterial = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
+var paredeCimaMaterial = new THREE.MeshPhongMaterial( {color: 0xffffff, map: texturaParede} );
 var paredeCima = new THREE.Mesh( paredeCimaGeometry, paredeCimaMaterial );
 paredeCima.position.set(0, 2.5, 0.15)
 paredeCima.receiveShadow = true;
@@ -32,7 +34,7 @@ cena.add(paredeCima);
 
 // //Parede Baixo
 var paredeBaixoGeometry = new THREE.BoxGeometry(7, 0.1, 0.3);
-var paredeBaixoMaterial = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
+var paredeBaixoMaterial = new THREE.MeshPhongMaterial( {color: 0xffffff, map: texturaParede} );
 var paredeBaixo = new THREE.Mesh( paredeBaixoGeometry, paredeBaixoMaterial );
 paredeBaixo.position.set(0, -2.5, 0.15)
 paredeBaixo.receiveShadow = true;
@@ -41,7 +43,7 @@ cena.add(paredeBaixo);
 
 //Parede Direita
 var paredeDireitaGeometry = new THREE.BoxGeometry(5.1, 0.1, 0.3);
-var paredeDireitaMaterial = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
+var paredeDireitaMaterial = new THREE.MeshPhongMaterial( {color: 0xffffff, map: texturaParede} );
 var paredeDireita = new THREE.Mesh( paredeDireitaGeometry, paredeDireitaMaterial );
 paredeDireita.position.set(3.5, 0, 0.15)
 paredeDireita.rotation.z=Math.PI/2;
@@ -51,7 +53,7 @@ cena.add(paredeDireita);
 
 //Parede Esquerda
 var paredeEsquerdaGeometry = new THREE.BoxGeometry(5.1, 0.1, 0.3);
-var paredeEsquerdaMaterial = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
+var paredeEsquerdaMaterial = new THREE.MeshPhongMaterial( {color: 0xffffff, map: texturaParede} );
 var paredeEsquerda = new THREE.Mesh( paredeEsquerdaGeometry, paredeEsquerdaMaterial );
 paredeEsquerda.position.set(-3.5, 0, 0.15);
 paredeEsquerda.rotation.z=Math.PI/2;
@@ -61,7 +63,7 @@ cena.add(paredeEsquerda);
 
 //Obstáculos
 var cilindroEsqObstaculo = new THREE.CylinderGeometry( 0.3, 0.3, 0.3, 32 );
-var cilindroMaterial = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+var cilindroMaterial = new THREE.MeshBasicMaterial( {color: 0xbbbbbb, map: texturaObstaculos} );
 var cilindroEsq = new THREE.Mesh( cilindroEsqObstaculo, cilindroMaterial );
 cena.add( cilindroEsq );
 cilindroEsq.rotation.x = Math.PI/2;
@@ -167,9 +169,7 @@ function desenhar(){
 	//esfera.translateX(x)
 	//esfera.translateY(y)
 	
-	
 	console.log(esfera.x);
-	
 	
 
     // console.log(angX);
