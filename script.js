@@ -4,8 +4,6 @@ var cena = new THREE.Scene;
 
 var camera = new THREE.PerspectiveCamera(35, window.innerWidth/window.innerHeight, 0.1, 1000);
 
-
-
 var teclas = [];
 for(var i = 0; i<256; i++){
     teclas[i] = false;
@@ -141,6 +139,26 @@ cena.add(luzPonto);
 camera.position.set(0, -6, 6);
 camera.lookAt(0,0,0);
 
+var rainCount = 15000;
+var rainGeo = new THREE.Geometry();
+for(let i=0;i<rainCount;i++){
+	var rainDrop = new THREE.Vector3(
+		Math.random() * 400 - 200,
+		Math.random() * 500 - 250,
+		Math.random() * 400 - 200
+	);
+	rainDrop.volocity = {};
+	rainDrop.velocity = 0;
+	rainGeo.vertices.push(rainDrop);
+}
+var rainMaterial = new THREE.PointsMaterial({
+	color: 0xaaaaaa,
+	size: 0.1,
+	transparent: true
+});
+var rain = new THREE.Points(rainGeo, rainMaterial);
+cena.add(rain);
+
 var render = new THREE.WebGLRenderer();
 render.setSize(window.innerWidth, window.innerHeight);
 var canvas = render.domElement;
@@ -170,7 +188,15 @@ function desenhar(){
 	x += (vel*mod)*Math.cos(Math.PI/180 * angX)
 	y += (vel*mod)*Math.sin(Math.PI/180 * angY)
 	
-	
+	rainGeo.vertices.forEach(p => {
+		p.velocity -= 0.1 + Math.random() * 0.1;
+		p.y += p.velocity;
+		if(p.y < -200){
+			p.y = 200;
+			p.velocity = 0;
+		}
+	});
+	rainGeo.verticesNeedUpdate = true;
 	requestAnimationFrame(desenhar);
 	render.render(cena, camera);
 	
