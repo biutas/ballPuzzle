@@ -77,6 +77,22 @@ cilindroDir.receiveShadow = true;
 cilindroDir.castShadow = true;
 cilindroDir.position.set(1.5, 0, 0.2);
 
+var cilindroCimaObstaculo = new THREE.CylinderGeometry( 0.3, 0.3, 0.3, 32 );
+var cilindroCima = new THREE.Mesh(cilindroCimaObstaculo, cilindroMaterial);
+//cena.add(cilindroDir);
+cilindroCima.rotation.x = Math.PI/2;
+cilindroCima.receiveShadow = true;
+cilindroCima.castShadow = true;
+cilindroCima.position.set(0, 1.5, 0.2);
+
+var cilindroBaixoObstaculo = new THREE.CylinderGeometry( 0.3, 0.3, 0.3, 32 );
+var cilindroBaixo = new THREE.Mesh(cilindroCimaObstaculo, cilindroMaterial);
+//cena.add(cilindroDir);
+cilindroBaixo.rotation.x = Math.PI/2;
+cilindroBaixo.receiveShadow = true;
+cilindroBaixo.castShadow = true;
+cilindroBaixo.position.set(0, -1.5, 0.2);
+
 var paredeEsquerdaObstaculo = new THREE.BoxGeometry(1, 0.1, 0.3);
 var paredeEsquerdaObst = new THREE.Mesh( paredeEsquerdaObstaculo, paredeEsquerdaMaterial );
 paredeEsquerdaObst.position.set(-0.5, 0, 0.15);
@@ -95,24 +111,43 @@ paredeDireitaObst.castShadow = true;
 
 var paredeCimaObstaculo = new THREE.BoxGeometry(1.1, 0.1, 0.3);
 var paredeCimaObs = new THREE.Mesh(paredeCimaObstaculo, paredeBaixoMaterial);
-paredeCimaObs.position.set(0, 0.5, 0.15)
+paredeCimaObs.position.set(0, -0.45, 0.15)
 paredeCimaObs.receiveShadow = true;
 paredeCimaObs.castShadow = true;
 //cena.add(paredeCimaObs);
 
 var paredeBaixoEsqObstaculo = new THREE.BoxGeometry(1.1/4, 0.1, 0.3);
 var paredeBaixoEsqObs = new THREE.Mesh(paredeBaixoEsqObstaculo, paredeBaixoMaterial);
-paredeBaixoEsqObs.position.set(-0.37, -0.45, 0.15)
+paredeBaixoEsqObs.position.set(-0.37, 0.45, 0.15)
 paredeBaixoEsqObs.receiveShadow = true;
 paredeBaixoEsqObs.castShadow = true;
 //cena.add(paredeBaixoEsqObs);
 
 var paredeBaixoDirObstaculo = new THREE.BoxGeometry(1.1/4, 0.1, 0.3);
 var paredeBaixoDirObs = new THREE.Mesh(paredeBaixoEsqObstaculo, paredeBaixoMaterial);
-paredeBaixoDirObs.position.set(0.37, -0.45, 0.15)
+paredeBaixoDirObs.position.set(0.37, 0.45, 0.15)
 paredeBaixoDirObs.receiveShadow = true;
 paredeBaixoDirObs.castShadow = true;
 //cena.add(paredeBaixoDirObs);
+
+var paredeCimaInicial = new THREE.BoxGeometry(1.1, 0.1, 0.3);
+var paredeCimaInicialObsa = new THREE.Mesh(paredeCimaInicial, paredeBaixoMaterial);
+paredeCimaInicialObsa.position.set(-3, -1.5, 0.15)
+paredeCimaInicialObsa.receiveShadow = true;
+paredeCimaInicialObsa.castShadow = true;
+
+var paredeLadoInicial = new THREE.BoxGeometry(1.5/3, 0.1, 0.3);
+var paredeLadoInicialObsa = new THREE.Mesh(paredeLadoInicial, paredeBaixoMaterial);
+paredeLadoInicialObsa.position.set(-2.5, -1.75, 0.15)
+paredeLadoInicialObsa.rotation.z += Math.PI/2;
+paredeLadoInicialObsa.receiveShadow = true;
+paredeLadoInicialObsa.castShadow = true;
+
+var desenhaPlayTable = new THREE.Group();
+desenhaPlayTable.add(plano, paredeCima, paredeBaixo, paredeDireita, paredeEsquerda, paredeCimaObs, paredeBaixoDirObs,
+	paredeBaixoEsqObs, paredeDireitaObst, paredeEsquerdaObst, cilindroEsq, cilindroDir, paredeCimaInicialObsa, paredeLadoInicialObsa,
+	cilindroCima, cilindroBaixo)
+cena.add(desenhaPlayTable)
 
 //Bola
 var esferaGeometry = new THREE.SphereGeometry(0.1, 50, 50);
@@ -120,7 +155,7 @@ var esferaMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
 var esfera = new THREE.Mesh(esferaGeometry, esferaMaterial);
 esfera.receiveShadow = true;
 esfera.castShadow = true;
-esfera.position.z = 0.1;
+esfera.position.set(-3, -1.95, 0.1)
 cena.add(esfera);
 
 //Luzes
@@ -128,7 +163,7 @@ var luzAmbiente = new THREE.AmbientLight(0xffffff, 0.4);
 cena.add(luzAmbiente);
 
 var luzPonto = new THREE.PointLight(0xffffff, 1, 1000);
-luzPonto.position.set(1.5,-1,1);
+luzPonto.position.set(0,-2,1.5);
 luzPonto.castShadow = true;
 luzPonto.shadow.camera.near = 0.1;
 luzPonto.shadow.camera.far = 25;
@@ -166,11 +201,6 @@ document.body.appendChild(canvas);
 
 render.shadowMap.enabled = true;
 render.shadowMap.type = THREE.BasicShadowMap;
-
-var desenhaPlayTable = new THREE.Group();
-desenhaPlayTable.add(plano, paredeCima, paredeBaixo, paredeDireita, paredeEsquerda, paredeCimaObs, paredeBaixoDirObs,
-	paredeBaixoEsqObs, paredeDireitaObst, paredeEsquerdaObst, cilindroEsq, cilindroDir)
-cena.add(desenhaPlayTable)
 
 var controles = new THREE.OrbitControls(camera, render.domElement);
 var angMax = Math.PI/15;
