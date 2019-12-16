@@ -32,11 +32,11 @@ O usuário irá mexer a mesa de forma que ele consiga colocar a bola dentro do b
 * [x] Fazer tabuleiro movimentar com setas 
 * [ ] Adicionar gravidade e colisão
 * [ ] Criar sensor de quanto finalizar fase (quando Y da bola for menor que 0)
-* [ ] Criar obstáculos no tabuleiro
+* [x] Criar obstáculos no tabuleiro
 * [ ] Criar mais fases
-* [ ] Criar pagina inicial com instruções
+* [x] Criar pagina inicial com instruções
     * [ ] Exigir nome de usuário
-    * [ ] Instruções de como jogar
+    * [x] Instruções de como jogar
     * [ ] Ranking de melhores pontuações
 * [ ] Criar método para avaliar pontuação
 * [ ] Tempo levado para concluir fase
