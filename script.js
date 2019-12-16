@@ -14,6 +14,45 @@ var texturaPlano = new textureLoader.load("textura/Mesa2Redimencionado.png");
 var texturaParede = new textureLoader.load("textura/paredes.png")
 var texturaObstaculos = new textureLoader.load("textura/tapeteVermelho.png")
 
+var info = document.createElement('div');
+info.style.position = 'absolute';
+info.style.top = '15px';
+info.style.width = '100%';
+info.style.textAlign = 'center';
+info.style.color = '#fff';
+info.style.fontWeight = 'bold';
+info.style.backgroundColor = 'transparent';
+info.style.zIndex = '1';
+info.style.fontFamily = 'Monospace';
+info.innerHTML = 'Alunos: Arthur de Bortoli, Douglas Vieira, Eduardo Cordeiro, Gabriel Lopes';
+document.body.appendChild(info);
+
+var info2 = document.createElement('div');
+info2.style.position = 'absolute';
+info2.style.top = '30px';
+info2.style.width = '100%';
+info2.style.textAlign = 'center';
+info2.style.color = '#fff';
+info2.style.fontWeight = 'bold';
+info2.style.backgroundColor = 'transparent';
+info2.style.zIndex = '1';
+info2.style.fontFamily = 'Monospace';
+info2.innerHTML = 'Setas movimentam o plano';
+document.body.appendChild(info2);
+
+var info3 = document.createElement('div');
+info3.style.position = 'absolute';
+info3.style.bottom = '15px';
+info3.style.width = '100%';
+info3.style.textAlign = 'center';
+info3.style.color = '#fff';
+info3.style.fontWeight = 'bold';
+info3.style.backgroundColor = 'transparent';
+info3.style.zIndex = '1';
+info3.style.fontFamily = 'Monospace';
+info3.innerHTML = 'Obs. A física não está funcionando';
+document.body.appendChild(info3);
+
 //Plano
 var planoGeometry = new THREE.PlaneGeometry(7, 5, 100, 100);
 var planoMaterial = new THREE.MeshPhongMaterial({color:0xffffff, map: texturaPlano});
